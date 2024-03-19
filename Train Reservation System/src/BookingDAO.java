@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.Random;
 
@@ -33,5 +34,13 @@ public class BookingDAO {
         preparedStatement.setDate(3, sqlDate);
         preparedStatement.setInt(4, booking.trainNo);
         preparedStatement.executeUpdate();
+    }
+
+    public void cancelBooking(int pnr_no) throws SQLException{
+        String query = "delete from booked_details where pnr_no = " + pnr_no;
+        Connection conn = DbConnection.getConnection();
+        Statement statement = conn.createStatement();
+        statement.executeUpdate(query);
+        statement.close();
     }
 }

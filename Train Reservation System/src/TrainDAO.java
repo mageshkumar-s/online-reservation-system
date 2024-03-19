@@ -9,9 +9,11 @@ public class TrainDAO {
         Connection conn = DbConnection.getConnection();
         Statement statement = conn.createStatement();
         ResultSet rs = statement.executeQuery(query);
-
+        System.out.println("---------------------  Availble Train List  -----------------\n");
+        int i =1;
         while(rs.next()){
-            System.out.println("train name is "+rs.getString(2) + " Starting from "+ rs.getString(3)+" Date of journey "+rs.getString(4)+"\n");
+            System.out.println(i +". Train name is "+rs.getString(2) + " Starting from "+ rs.getString(3)+" Date of journey "+rs.getString(4)+"\n");
+            i++;
         }
     }
 
