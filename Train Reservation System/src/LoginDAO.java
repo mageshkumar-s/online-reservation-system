@@ -15,7 +15,11 @@ public class LoginDAO {
             preparedStatement.setString(2, hashPassword(login.passWord)); 
             preparedStatement.setString(3, login.mobileNo);
             int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected > 0){
+                System.out.println("                            Account created successfully!. Welcome " + login.userName );
+            }
             return rowsAffected > 0; 
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -40,7 +44,7 @@ public class LoginDAO {
         }
     }
 
-    // Method to hash the password using SHA-256 algorithm
+    
     private String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
