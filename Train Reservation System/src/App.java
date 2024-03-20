@@ -8,7 +8,11 @@ public class App {
         try {
             dbConn.getConnection();
             Scanner scan = new Scanner(System.in);
-            System.out.println("----------Enter your option.----------\n 1. Create account\n 2. Login\n");
+            System.out.println("===================================== Online Reservation System ======================================");
+            System.out.println("--------------------------------------   Enter your option    ----------------------------------------");
+            System.out.println("                                         1.Create account");
+            System.out.println("                                         2.Login");
+            System.out.println("======================================================================================================");
             int userOpt = scan.nextInt();
 
             Login login = new Login(userOpt);
@@ -18,19 +22,21 @@ public class App {
             if (userOpt == 1) {
                 loginResult = logindao.signUpCredentials(login);
                 if (loginResult) {
-                    System.out.println("Account created successfully! \n"+login.userName+"! ");
+                    System.out.println("                            Account created successfully! Welcome, "+login.userName+"! ");
+                    System.out.println("------------------------------------------------------------------------------------------------------");
                 } else {
-                    System.out.println("Failed to create account.");
+                    System.out.println("                                    Failed to create account.");
                 }
             } else if (userOpt == 2) {
                 loginResult = logindao.loginCredentials(login);
                 if (loginResult) {
-                    System.out.println("Login successful! Welcome, " + login.userName + "!");
+                    System.out.println("                       Login successful! Welcome, " + login.userName + "!");
+                    System.out.println("--------------------------------------------------------------------------------------------");
                 } else {
-                    System.out.println("Failed to login.");
+                    System.out.println("                                              Failed to login.");
                 }
             } else {
-                System.out.println("Invalid option. Please enter 1 or 2.");
+                System.out.println("                            Invalid option. Please enter 1 or 2.");
                 return;
             }
             
@@ -39,11 +45,11 @@ public class App {
                 
                 TrainDAO traindao = new TrainDAO();
                 traindao.displayTrainInfo();
-                System.out.println("---------Enter your option------------");
-                System.out.println("1. To Book your train.");
-                System.out.println("2. To Cancel booking.");
-                System.out.println("3. To exit");
-                System.out.println("--------------------------------------");
+                System.out.println("------------------------------------  Enter your option  --------------------------------------");
+                System.out.println("                                    1. To Book your train.");
+                System.out.println("                                    2. To Cancel booking.");
+                System.out.println("                                    3. To exit");
+                System.out.println("-----------------------------------------------------------------------------------------------");
                 userOpt = scan.nextInt();
 
                 switch (userOpt) {
@@ -52,17 +58,19 @@ public class App {
                         if (booking.isAvailable()) {
                             BookingDAO bookingdao = new BookingDAO();
                             bookingdao.addBooking(booking);
-                            System.out.println("Your Tickets are confirmed successfully");
+                            
                         } else {
-                            System.out.println("Sorry, Train is Full");
+                            System.out.println("                Sorry, Train is Full");
                         }
                         break;
                     case 2:
-                        System.out.print("Enter your PNR number to cancel: ");
+                        System.out.println("------------------------------------- Ticket cancellation ------------------------------------------");
+                        System.out.print("\n                              Enter your PNR number to cancel: ");
                         int bookedPnrNo = scan.nextInt();
                         BookingDAO bookingdao = new BookingDAO();
                         bookingdao.cancelBooking(bookedPnrNo);
-                        System.out.println("Your Ticket is cancelled successfully");
+                        System.out.println("                              Your Ticket is cancelled successfully.");
+                        System.out.println("----------------------------------------------------------------------------------------------------");
                         break;
                     case 3:
                         System.out.println("Thank you for visiting....");
@@ -73,7 +81,7 @@ public class App {
             }
                 
             }else{
-                System.out.println("Please provide valid information");
+                System.out.println("                                    Please provide valid information.");
             }
                     
         } catch (SQLException e) {
@@ -81,3 +89,4 @@ public class App {
         }
     }
 }
+

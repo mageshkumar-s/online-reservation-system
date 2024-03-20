@@ -8,8 +8,8 @@ import java.util.Random;
 
 public class BookingDAO {
 
-    public int getBookedCount(int trainNo,Date date ) throws SQLException{
-        String query = "select count(pnr_no) from booked_details where train_no = ? and date = ?";
+    public int getBookedCount(int trainNo, Date date) throws SQLException {
+        String query = "SELECT COUNT(pnr_no) FROM booked_details WHERE train_no = ? AND date = ?";
         Connection conn = DbConnection.getConnection();
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -18,12 +18,14 @@ public class BookingDAO {
         ResultSet rs = preparedStatement.executeQuery();
         rs.next();
         return rs.getInt(1);
+    
     }
+    
 
     public void addBooking(Booking booking) throws SQLException{
 
         Random random = new Random();
-        int pnr_no = random.nextInt(9000)+1000;
+        int pnr_no = random.nextInt(90000)+1000;
 
         String query = "insert into booked_details (pnr_no, passenger_name, date, train_no) values (?, ?, ?, ?)";
         Connection conn = DbConnection.getConnection();
@@ -34,6 +36,42 @@ public class BookingDAO {
         preparedStatement.setDate(3, sqlDate);
         preparedStatement.setInt(4, booking.trainNo);
         preparedStatement.executeUpdate();
+        printTicket(pnr_no);
+    }
+
+    public void printTicket(int pnrNo) {
+        try {
+            String query = "SELECT * FROM booked_details WHERE pnr_no = ?";
+            Connection conn = DbConnection.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, pnrNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                // Retrieve ticket details from the result set
+                int pnr_no = resultSet.getInt("pnr_no");
+                String passengerName = resultSet.getString("passenger_name");
+                Date date = resultSet.getDate("date");
+                int trainNo = resultSet.getInt("train_no");
+    
+                // Print ticket details
+                System.out.println("               Your Tickets are confirmed successfully!");
+                System.out.println("------------------------:   Ticket Details  :-------------------------------");
+                System.out.println("                        PNR Number      : " + pnr_no);
+                System.out.println("                        Passenger Name  : " + passengerName);
+                System.out.println("                        Date of journey : " + date);
+                System.out.println("                        Train Number    : " + trainNo);
+                System.out.println("--------------------------------------------------------------------------");
+                // Add other ticket details as needed
+            } else {
+                System.out.println("Ticket details not found for PNR number: " + pnrNo);
+            }
+    
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void cancelBooking(int pnr_no) throws SQLException{

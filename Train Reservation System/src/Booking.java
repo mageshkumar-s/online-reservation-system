@@ -11,11 +11,11 @@ public class Booking {
 
     Booking(){
         Scanner scan = new Scanner(System.in);
-        System.out.print("Enter name of Passenger : ");
+        System.out.print("                      Enter name of Passenger : ");
         passengerName = scan.next();
-        System.out.print("Enter Train No :");
+        System.out.print("                      Enter Train No :");
         trainNo = scan.nextInt();
-        System.out.print("Enter date dd-mm-yyyy ");
+        System.out.print("                      Enter date dd-mm-yyyy :");
         String journeyDate = scan.next();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -32,12 +32,16 @@ public class Booking {
 
         TrainDAO traindao = new TrainDAO();
         BookingDAO bookingdao =new BookingDAO();
-
         int capacity = traindao.getCapacity(trainNo);
-        //System.out.println("capacity is :" + capacity);
         int booked = bookingdao.getBookedCount(trainNo, date);
-        System.out.println("capacity is :" + capacity + " booked seat count :" + booked);
+        int availableSeat = capacity - booked ;
+        System.out.println("                      Available Seats :" + availableSeat);
         return capacity > booked;
     } 
+    public int getPnrNo() throws SQLException{
+
+        return trainNo;
+        
+    }
 
 }
