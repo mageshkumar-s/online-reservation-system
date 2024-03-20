@@ -7,28 +7,44 @@ public class App {
         DbConnection dbConn = new DbConnection();
         try {
             dbConn.getConnection();
-            Login login = new Login();
+            Scanner scan = new Scanner(System.in);
+            System.out.println("----------Enter your option.----------\n 1. Create account\n 2. Login\n");
+            int userOpt = scan.nextInt();
+
+            Login login = new Login(userOpt);
             LoginDAO logindao = new LoginDAO();
             
-            boolean signUpResult = logindao.signUpCredentials(login);
-            boolean loginResult = logindao.loginCredentials(login);
-            if(signUpResult || loginResult){
-                if(signUpResult && loginResult == false){
-                    System.out.println("Account created successfully!");
-                }else if(loginResult && signUpResult == false) {
-                    System.out.println("Login successful! Welcome, " + login.userName + "!");
+            boolean loginResult;
+            if (userOpt == 1) {
+                loginResult = logindao.signUpCredentials(login);
+                if (loginResult) {
+                    System.out.println("Account created successfully! \n"+login.userName+"! ");
+                } else {
+                    System.out.println("Failed to create account.");
                 }
-                // Display train information after successful account creation
+            } else if (userOpt == 2) {
+                loginResult = logindao.loginCredentials(login);
+                if (loginResult) {
+                    System.out.println("Login successful! Welcome, " + login.userName + "!");
+                } else {
+                    System.out.println("Failed to login.");
+                }
+            } else {
+                System.out.println("Invalid option. Please enter 1 or 2.");
+                return;
+            }
+            
+            
+            if(loginResult){
+                
                 TrainDAO traindao = new TrainDAO();
                 traindao.displayTrainInfo();
-
-                Scanner scan = new Scanner(System.in);
                 System.out.println("---------Enter your option------------");
                 System.out.println("1. To Book your train.");
                 System.out.println("2. To Cancel booking.");
                 System.out.println("3. To exit");
                 System.out.println("--------------------------------------");
-                int userOpt = scan.nextInt();
+                userOpt = scan.nextInt();
 
                 switch (userOpt) {
                     case 1:
@@ -54,10 +70,10 @@ public class App {
                         break;
                     default:
                         System.out.println("Invalid option. Please enter 1, 2, or 3.");
-                }
+            }
                 
             }else{
-                System.out.println("Failed to create or login account. Please provide valid information");
+                System.out.println("Please provide valid information");
             }
                     
         } catch (SQLException e) {

@@ -6,10 +6,8 @@ public class Login {
     String passWord;
     String mobileNo;
 
-    Login(){
-        System.out.println("----------Enter your option.----------\n 1. Create account\n 2. Login\n");
+    Login(int userOpt){
         Scanner scan = new Scanner(System.in);
-        int userOpt = scan.nextInt();
         switch (userOpt) {
             case 1:
                 System.out.println("-------Create Your Account-----");
